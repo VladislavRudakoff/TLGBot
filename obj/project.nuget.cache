@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "6FO1c7L67oWypnlQO+HRgiGCFIie5skKTlXxRqO/Jfs7zky8h2S23T1zikJr5Uqo9KF6tg+F/9T+DaNyxoy3vA==",
+  "dgSpecHash": "V7KHolD+uERzuukPoa1jNMaBKNQopvT1eBTea9GjTeZmqihbOEmLiFdeIIIh/5e1vF+WY55eyttNUmknn7sEKQ==",
   "success": true,
   "projectFilePath": "D:\\MyApps\\TGBot\\TLGBot\\TLGBot.csproj",
   "expectedPackageFiles": [
@@ -82,8 +82,7 @@
     "C:\\Users\\Владислав Рудаков\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\Владислав Рудаков\\.nuget\\packages\\telegram.bot\\15.7.1\\telegram.bot.15.7.1.nupkg.sha512",
     "C:\\Users\\Владислав Рудаков\\.nuget\\packages\\telegram.bot.extensions.loginwidget\\1.2.0\\telegram.bot.extensions.loginwidget.1.2.0.nupkg.sha512",
-    "C:\\Users\\Владислав Рудаков\\.nuget\\packages\\telegram.bot.extensions.passport\\1.0.0\\telegram.bot.extensions.passport.1.0.0.nupkg.sha512",
-    "C:\\Users\\Владислав Рудаков\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
+    "C:\\Users\\Владислав Рудаков\\.nuget\\packages\\telegram.bot.extensions.passport\\1.0.0\\telegram.bot.extensions.passport.1.0.0.nupkg.sha512"
   ],
   "logs": []
 }

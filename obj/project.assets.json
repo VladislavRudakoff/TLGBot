@@ -4751,7 +4751,7 @@
     ".NETCoreApp,Version=v3.1": [
       "Telegram.Bot >= 15.7.1",
       "Telegram.Bot.Extensions.LoginWidget >= 1.2.0",
-      "Telegram.Bot.Extensions.Passport >= *"
+      "Telegram.Bot.Extensions.Passport >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -4767,18 +4767,17 @@
       "outputPath": "D:\\MyApps\\TGBot\\TLGBot\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Владислав Рудаков\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Владислав Рудаков\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "projectReferences": {}
         }
       },
@@ -4790,6 +4789,7 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
         "dependencies": {
           "Telegram.Bot": {
             "target": "Package",
@@ -4801,7 +4801,7 @@
           },
           "Telegram.Bot.Extensions.Passport": {
             "target": "Package",
-            "version": "[*, )"
+            "version": "[1.0.0, )"
           }
         },
         "imports": [
@@ -4814,18 +4814,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[3.1.2, 3.1.2]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
       }
     }
   }
