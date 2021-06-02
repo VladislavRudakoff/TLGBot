@@ -6,6 +6,7 @@ using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
 using TLGBot.Constants;
+using TLGBot.Services;
 
 namespace TLGBot
 {
@@ -21,21 +22,13 @@ namespace TLGBot
             botClient.OnMessage += Bot_OnMessage;
             botClient.StartReceiving();
             Thread.Sleep(int.MaxValue);
-            
-            
-            /* Почему-то падает с ошибкой.
-            Console.WriteLine("Press any key to exit");
-            Console.ReadKey();
-
-            botClient.StopReceiving();
-            */
         }
             static async void Bot_OnMessage(object sender, MessageEventArgs e) 
             {
                 if (e.Message.Text != null)
                 {
                 Console.WriteLine($"Received a text message in chat {e.Message.Chat.Id} an user name {e.Message.Chat.Username}.");
-                Console.WriteLine($"User {e.Message.Chat.Username} said: {e.Message.Text}.");
+                Console.WriteLine($"User {e.Message.Chat.Username} said: {e.Message.Text}." + e.Message.Chat.Id);
                 
 
                     switch (e.Message.Text.ToLower().Trim())
@@ -66,7 +59,7 @@ namespace TLGBot
                             break;
 
                         case var message when message == Commands.TestWeather :
-                            await SendMessage(e.Message.Chat, "Немножко обо мне: \n бла-бла-бла-бла \n бла-бла-бла-бла \n бла-бла-бла-бла \n бла-бла-бла-бла");
+                            await SendMessage(e.Message.Chat, $"404 Not Found");
                             break;
                     }
 

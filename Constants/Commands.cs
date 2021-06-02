@@ -7,7 +7,7 @@ namespace TLGBot.Constants
         public static string[] GetWeatherInfo = {"погода", "weather"};
         public static string InfAboutMe = "about";
         public static string TestCommandForAdmin = "/starttest";
-        public static string TestWeather = "погода";
+        public static string TestWeather = "тест погода";
 
     }
 }
