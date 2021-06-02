@@ -1,42 +1,59 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using Newtonsoft.Json;
 using TLGBot.Constants;
-using TLGBot.Interfaces;
 using static TLGBot.Services.DeserializerJsonProp;
 
 namespace TLGBot.Services
 {
-    public class GetWeatherInCity : IGetWeather
+    public static class GetWeatherInCity
     {
         public static int Temperature { get; set; }
         public static int FeelsLikeTemperature { get; set; }
         public static int MaxTemperature { get; set; }
         public static int MinTemperature { get; set; }
         public static string DescriptionWeather { get; set; }
+        public static string GroupDescriptionWeather { get; set; }
         public static int AtmosphericPressure { get; set; }
         public static int Humidity { get; set; }
         public static int WindSpeed { get; set; }
-        public static Root JsonWeatherObject { get; set;}
+        public static string City { get; set; }
+        public static Root JsonWeatherObject { get; set; }
+        public static HttpWebResponse HttpCode { get; set; }
 
-        public GetWeatherInCity(string _city)
+        public static void GetWeather(string city)
         {
-            var city = _city;
-            GetWeather(city);
-        }
-        public void GetWeather(string city)
-        {
+            try
+            {
             string weatherUrl = Settings.WeatherUrl + city + Settings.WeatherApiKey + Settings.PropertiesRequest;
             HttpWebRequest myWebRequest = (HttpWebRequest)HttpWebRequest.Create(weatherUrl);
+            myWebRequest.Method = "GET";
             string jsonValue = "";
-            var myWebResponse = myWebRequest.GetResponse();
-            StreamReader reader = new StreamReader(myWebResponse.GetResponseStream());
-            jsonValue = reader.ReadToEnd();
-            Root jsonWeatherObject = JsonConvert.DeserializeObject<Root>(jsonValue);
-            JsonWeatherObject = jsonWeatherObject;
-            SetWeather();
+            using(var myWebResponse = myWebRequest.GetResponse())
+              {
+                using(StreamReader reader = new StreamReader(myWebResponse.GetResponseStream()))
+                {
+                    jsonValue = reader.ReadToEnd();
+                    Root jsonWeatherObject = JsonConvert.DeserializeObject<Root>(jsonValue);
+                    JsonWeatherObject = jsonWeatherObject;
+                    SetWeather();
+                }
+              }
+            }
+            catch (WebException ex)
+            {
+                WebExceptionStatus status = ex.Status;
+                    if (status == WebExceptionStatus.ProtocolError)
+                        {
+                            HttpWebResponse httpResponse = (HttpWebResponse)ex.Response;
+                            HttpCode = httpResponse;
+                            Console.WriteLine($"Код ошибки: {(int)httpResponse.StatusCode} - {httpResponse.StatusCode}");
+                        }
+            }
+            
         }
         private static void SetWeather()
         {
@@ -44,10 +61,14 @@ namespace TLGBot.Services
             FeelsLikeTemperature = (int)JsonWeatherObject.main.feels_like;
             MaxTemperature = (int)JsonWeatherObject.main.temp_max;
             MinTemperature = (int)JsonWeatherObject.main.temp_min;
+            //TextInfo myTI = new CultureInfo("ru-RU").TextInfo;
+            //myTI.ToTitleCase(JsonWeatherObject.weather[0].description);
             DescriptionWeather = JsonWeatherObject.weather[0].description;
             AtmosphericPressure = (int)JsonWeatherObject.main.temp;
             Humidity = JsonWeatherObject.main.humidity;
             WindSpeed = (int)JsonWeatherObject.wind.speed;
+            GroupDescriptionWeather = JsonWeatherObject.weather[0].main;
+            City = JsonWeatherObject.name;
         }
 
     }

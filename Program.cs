@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,7 +29,7 @@ namespace TLGBot
                 if (e.Message.Text != null)
                 {
                 Console.WriteLine($"Received a text message in chat {e.Message.Chat.Id} an user name {e.Message.Chat.Username}.");
-                Console.WriteLine($"User {e.Message.Chat.Username} said: {e.Message.Text}." + e.Message.Chat.Id);
+                Console.WriteLine($"User {e.Message.Chat.Username} said: {e.Message.Text}.");
                 
 
                     switch (e.Message.Text.ToLower().Trim())
@@ -39,7 +40,7 @@ namespace TLGBot
                             break;
 
                         case var message when Array.Exists(Commands.Hello, s => s.Equals(message)) :
-                            await SendMessage(e.Message.Chat, "Привет-привет");
+                            await SendMessage(e.Message.Chat, $"Привет-привет {EmojiUnicode.wavingHandIcon}");
                             break;
 
                         case var message when Array.Exists(Commands.GetWeatherInfo, s => s.Equals(message)) :
@@ -51,15 +52,26 @@ namespace TLGBot
                             break;
 
                         case var message when message == Commands.TestCommandForAdmin :
+                            GetWeatherInCity.GetWeather("морокко");
+                            if ((int)GetWeatherInCity.HttpCode.StatusCode == 404)
+                            {
+                                await SendMessage(e.Message.Chat, $"Простите, данный город не найден.");
+                                break;
+                            }
                             await SendMessage
                             (
                                 e.Message.Chat, 
-                                $"{EmojiUnicode.wavingHandIcon} {EmojiUnicode.sunIcon} {EmojiUnicode.temperatureIcon} {EmojiUnicode.sunBehindCloudIcon} {EmojiUnicode.cloudWithLightningAndRainIcon} {EmojiUnicode.rainIcon} {EmojiUnicode.snowIcon}"
+                                $"{GetWeatherInCity.GroupDescriptionWeather}"
                             );
                             break;
 
                         case var message when message == Commands.TestWeather :
-                            await SendMessage(e.Message.Chat, $"404 Not Found");
+                            GetWeatherInCity.GetWeather(message);
+                            await SendMessage
+                            (
+                                e.Message.Chat, 
+                                $" {GetWeatherInCity.City}{EmojiUnicode.sunIcon}\n Сегодня {GetWeatherInCity.DescriptionWeather}\n {EmojiUnicode.temperatureIcon}Температура {GetWeatherInCity.Temperature.ToString()}{EmojiUnicode.degreesCelsius}\n {EmojiUnicode.temperatureIcon}Ощущается как {GetWeatherInCity.FeelsLikeTemperature.ToString()}{EmojiUnicode.degreesCelsius}\n {EmojiUnicode.temperatureIcon}По городу {GetWeatherInCity.MinTemperature.ToString()}{EmojiUnicode.degreesCelsius}-{GetWeatherInCity.MaxTemperature.ToString()}{EmojiUnicode.degreesCelsius}\n Атмосферное давление: {GetWeatherInCity.AtmosphericPressure.ToString()} гПа\n Влажность: {GetWeatherInCity.Humidity.ToString()}%\n Скорость ветра: {GetWeatherInCity.WindSpeed.ToString()} м/с"
+                            );
                             break;
                     }
 

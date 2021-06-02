@@ -9,6 +9,7 @@ namespace TLGBot.Constants
         public static readonly string cloudWithLightningAndRainIcon = "⛈";
         public static readonly string rainIcon = "🌧";
         public static readonly string snowIcon = "❄";
+        public static readonly string degreesCelsius = "℃";
 
 
     }
