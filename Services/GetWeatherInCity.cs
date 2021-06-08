@@ -22,7 +22,7 @@ namespace TLGBot.Services
         public static int WindSpeed { get; set; }
         public static string City { get; set; }
         public static Root JsonWeatherObject { get; set; }
-        public static HttpWebResponse HttpCode { get; set; }
+        public static HttpStatusCode HttpCode { get; set; }
 
         public static void GetWeather(string city)
         {
@@ -36,6 +36,7 @@ namespace TLGBot.Services
               {
                 using(StreamReader reader = new StreamReader(myWebResponse.GetResponseStream()))
                 {
+                    HttpCode = ((HttpWebResponse)myWebResponse).StatusCode;
                     jsonValue = reader.ReadToEnd();
                     Root jsonWeatherObject = JsonConvert.DeserializeObject<Root>(jsonValue);
                     JsonWeatherObject = jsonWeatherObject;
@@ -49,7 +50,6 @@ namespace TLGBot.Services
                     if (status == WebExceptionStatus.ProtocolError)
                         {
                             HttpWebResponse httpResponse = (HttpWebResponse)ex.Response;
-                            HttpCode = httpResponse;
                             Console.WriteLine($"Код ошибки: {(int)httpResponse.StatusCode} - {httpResponse.StatusCode}");
                         }
             }
@@ -61,8 +61,6 @@ namespace TLGBot.Services
             FeelsLikeTemperature = (int)JsonWeatherObject.main.feels_like;
             MaxTemperature = (int)JsonWeatherObject.main.temp_max;
             MinTemperature = (int)JsonWeatherObject.main.temp_min;
-            //TextInfo myTI = new CultureInfo("ru-RU").TextInfo;
-            //myTI.ToTitleCase(JsonWeatherObject.weather[0].description);
             DescriptionWeather = JsonWeatherObject.weather[0].description;
             AtmosphericPressure = (int)JsonWeatherObject.main.temp;
             Humidity = JsonWeatherObject.main.humidity;
