@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.114.3" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.114.2" />
     <PackageReference Include="Telegram.Bot" Version="15.7.1" />
     <PackageReference Include="Telegram.Bot.Extensions.LoginWidget" Version="1.2.0" />

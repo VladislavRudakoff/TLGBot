@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Net;
 using Newtonsoft.Json;
@@ -22,8 +21,7 @@ namespace TLGBot.Services
         public static int WindSpeed { get; set; }
         public static string City { get; set; }
         public static Root JsonWeatherObject { get; set; }
-        public static HttpStatusCode HttpCode { get; set; }
-
+        public static int HttpCode { get; set; }
         public static void GetWeather(string city)
         {
             try
@@ -36,7 +34,7 @@ namespace TLGBot.Services
               {
                 using(StreamReader reader = new StreamReader(myWebResponse.GetResponseStream()))
                 {
-                    HttpCode = ((HttpWebResponse)myWebResponse).StatusCode;
+                    //HttpCode = ((HttpWebResponse)myWebResponse).StatusCode;
                     jsonValue = reader.ReadToEnd();
                     Root jsonWeatherObject = JsonConvert.DeserializeObject<Root>(jsonValue);
                     JsonWeatherObject = jsonWeatherObject;
@@ -50,6 +48,7 @@ namespace TLGBot.Services
                     if (status == WebExceptionStatus.ProtocolError)
                         {
                             HttpWebResponse httpResponse = (HttpWebResponse)ex.Response;
+                            HttpCode = (int)httpResponse.StatusCode;
                             Console.WriteLine($"Код ошибки: {(int)httpResponse.StatusCode} - {httpResponse.StatusCode}");
                         }
             }
