@@ -5,6 +5,7 @@ using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
 using TLGBot.Constants;
+using TLGBot.Interfaces;
 using TLGBot.Services;
 
 namespace TLGBot
@@ -12,6 +13,7 @@ namespace TLGBot
     class Program
     {
         public static ITelegramBotClient botClient;
+        
         static void Main(string[] args)
         {
             botClient = new TelegramBotClient("1873589881:AAEDfwaYTuyBPpKeb5TDxdYUTzzRUt1-7tQ");
@@ -24,33 +26,37 @@ namespace TLGBot
         
             static async void Bot_OnMessage(object sender, MessageEventArgs e) 
             {
+                
+
                 if (e.Message.Text != null)
                 {
+                    IConnectionDB connect = new Connection();
+                    IWeather weather = new GetWeatherInCity();
 
                 Console.WriteLine($"Received a text message in chat {e.Message.Chat.Id} an user name {e.Message.Chat.Username}.");
                 Console.WriteLine($"User {e.Message.Chat.Username} said: {e.Message.Text}.");
                     
                     if (Array.Exists(Commands.GetWeatherInfo, s => s.Equals(e.Message.Text.ToLower())))
                     {
-                        if (String.IsNullOrEmpty(Connection.UserRequest(e.Message.Chat.Id.ToString())))
+                        if (String.IsNullOrEmpty(connect.UserRequest(e.Message.Chat.Id.ToString())))
                         {
-                            await SendMessage(e.Message.Chat, "Спасибо, что спросил, друг. Нужно же нам о чём-то разговаривать. \n Погоду в каком городе ты хотел бы узнать?");
-                            Connection.Update("weather", e.Message.Chat.Id.ToString());
+                            await SendMessage(e.Message.Chat, "Погоду в каком городе Вы хотели бы узнать?");
+                            connect.Update("weather", e.Message.Chat.Id.ToString());
                         }
                         else
                         {
-                            await SendMessage(e.Message.Chat, "Возможно мы друг друга не поняли. Ты уже спрашивал меня про погоду. Введи название ГОРОДА. Ну, Москва, например, Санкт-Петербург, Зажопинск и пр");
+                            await SendMessage(e.Message.Chat, "Возможно мы друг друга не поняли. Ты уже спрашивал меня про погоду. Введи название ГОРОДА. Ну, Москва, например, Зажопинск");
                         }
                     }
-                    else if (Connection.UserRequest(e.Message.Chat.Id.ToString()) == "weather")
+                    else if (connect.UserRequest(e.Message.Chat.Id.ToString()) == "weather")
                     {
                         switch (e.Message.Text.ToLower().Trim(new Char[] { ' ', '*', '.', ',', '!', '?', '/', '|', '\\' }))
                         {
                         case var message:
-                            GetWeatherInCity.GetWeather(message);
+                            weather.GetWeather(message);
                             if (GetWeatherInCity.HttpCode == 404)
                             {
-                                await SendMessage(e.Message.Chat, $"Простите, данный город не найден. Возможно Вы ошиблись при вводе");
+                                await SendMessage(e.Message.Chat, $"Простите, данный город не найден. Возможно Вы ошиблись при вводе. Если город находится не на территории РФ, то попробуйте ввести его название на английском");
                                 GetWeatherInCity.HttpCode = default;
                                 break;
                             }
@@ -59,12 +65,17 @@ namespace TLGBot
                                 await SendMessage
                                 (
                                     e.Message.Chat, 
-                                    $" {GetWeatherInCity.City}{EmojiUnicode.sunIcon}\n Сегодня {GetWeatherInCity.DescriptionWeather}\n {EmojiUnicode.temperatureIcon}Температура {GetWeatherInCity.Temperature.ToString()}{EmojiUnicode.degreesCelsius}\n {EmojiUnicode.temperatureIcon}Ощущается как {GetWeatherInCity.FeelsLikeTemperature.ToString()}{EmojiUnicode.degreesCelsius}\n {EmojiUnicode.temperatureIcon}По городу {GetWeatherInCity.MinTemperature.ToString()}-{GetWeatherInCity.MaxTemperature.ToString()}{EmojiUnicode.degreesCelsius}\n Атмосферное давление: {GetWeatherInCity.AtmosphericPressure.ToString()} гПа\n Влажность: {GetWeatherInCity.Humidity.ToString()}%\n Скорость ветра: {GetWeatherInCity.WindSpeed.ToString()} м/с"
+                                    $" {weather.City}{EmojiUnicode.sunIcon}\n Сегодня {weather.DescriptionWeather}\n {EmojiUnicode.temperatureIcon}Температура {weather.Temperature.ToString()}{EmojiUnicode.degreesCelsius}\n {EmojiUnicode.temperatureIcon}Ощущается как {weather.FeelsLikeTemperature.ToString()}{EmojiUnicode.degreesCelsius}\n {EmojiUnicode.temperatureIcon}По городу {weather.MinTemperature.ToString()}-{weather.MaxTemperature.ToString()}{EmojiUnicode.degreesCelsius}\n Атмосферное давление: {weather.AtmosphericPressure.ToString()} гПа\n Влажность: {weather.Humidity.ToString()}%\n Скорость ветра: {weather.WindSpeed.ToString()} м/с"
                                 );
+                                connect.Update(null, e.Message.Chat.Id.ToString());
                                 break;
                             }
-                        }
-                        Connection.Update(null, e.Message.Chat.Id.ToString());
+                        }  
+                    }
+                    else if(e.Message.Text == "/start" && connect.Read(e.Message.Chat.Id.ToString()) != e.Message.Chat.Id.ToString())
+                    {
+                        connect.Registration(e.Message.Chat.Id.ToString(), e.Message.Chat.Username.ToString());
+                        Console.WriteLine($"Пользователь добавлен в БД");
                     }
                     else
                     {
@@ -80,15 +91,14 @@ namespace TLGBot
                             break;
 
                         case var message when message == Commands.InfAboutMe :
-                            await SendMessage(e.Message.Chat, "Немножко обо мне: \n бла-бла-бла-бла \n бла-бла-бла-бла \n бла-бла-бла-бла \n бла-бла-бла-бла");
+                            await SendMessage(e.Message.Chat, "Немножко обо мне: \n Приветствую, зовут меня Влад, я начинающий backend-разработчик на языке C# \n Создал данного бота в учебных целях, дабы наработать немного практики и научиться обращаться с БД \n Для связи в телеграме используйте юзернейм: Reflected_Shadow");
                             break;
 
                         case var message when message == Commands.RegUser :
-                            if (Connection.Read(e.Message.Chat.Id.ToString()) != e.Message.Chat.Id.ToString())
+                            if (connect.Read(e.Message.Chat.Id.ToString()) != e.Message.Chat.Id.ToString())
                             {
-                                Connection.Registration(e.Message.Chat.Id.ToString(), e.Message.Chat.Username.ToString());
+                                connect.Registration(e.Message.Chat.Id.ToString(), e.Message.Chat.Username.ToString());
                                 await SendMessage(e.Message.Chat, $"Пользователь {e.Message.Chat.Username} добавлен в БД");
-                                Connection.ContainedUserInDB = true;
                             }
                             else
                             {
@@ -97,7 +107,7 @@ namespace TLGBot
                             break;
 
                         case var message when message == Commands.DelUser :
-                            Connection.Delete(e.Message.Chat.Id.ToString());
+                            connect.Delete(e.Message.Chat.Id.ToString());
                             await SendMessage(e.Message.Chat, $"Пользователь {e.Message.Chat.Username} удалён из БД");
                             break;
                         }

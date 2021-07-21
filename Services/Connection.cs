@@ -1,14 +1,15 @@
 using System;
 using System.Data.SQLite;
+using TLGBot.Interfaces;
 
 namespace TLGBot.Services
 {
-    public static class Connection
+    public class Connection: IConnectionDB
     {
-        public static SQLiteConnection sqliteDB;
-        public static bool ContainedUserInDB;
-        public static int UserRequestInDB;
-        public static void Registration(string chatId, string userName)
+        public SQLiteConnection sqliteDB;
+        public int UserRequestInDB;
+
+        public void Registration(string chatId, string userName)
         {
             try
             {
@@ -27,11 +28,11 @@ namespace TLGBot.Services
             catch (Exception ex)
             {
                 Console.WriteLine("Error: " + ex);
-                ContainedUserInDB = true;
+                Console.WriteLine("Что-то случилось с БД, нужно проверить.");
             }
         }
         //If HTTP status code error 403 (403: Forbidden: bot was blocked by the user) - Remove a user from the DB 
-        public static void Delete(string chatId)
+        public void Delete(string chatId)
         { 
             using (sqliteDB = new SQLiteConnection("Data Source=DB.db;"))
             {
@@ -42,7 +43,7 @@ namespace TLGBot.Services
                 sqliteDB.Close(); 
             }
         }
-        public static string UserRequest(string chatId)
+        public string UserRequest(string chatId)
         {
             using (sqliteDB = new SQLiteConnection("Data Source=DB.db;"))
             {
@@ -54,7 +55,7 @@ namespace TLGBot.Services
                 return request;
             }
         }
-        public static string Read(string chatId)
+        public string Read(string chatId)
         {
             using (sqliteDB = new SQLiteConnection("Data Source=DB.db;"))
             {
@@ -67,7 +68,7 @@ namespace TLGBot.Services
             }
         }
 
-        public static void Update(string request, string chatId)
+        public void Update(string request, string chatId)
         { 
             using (sqliteDB = new SQLiteConnection("Data Source=DB.db;"))
             {

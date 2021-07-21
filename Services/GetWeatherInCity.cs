@@ -4,25 +4,26 @@ using System.IO;
 using System.Net;
 using Newtonsoft.Json;
 using TLGBot.Constants;
+using TLGBot.Interfaces;
 using static TLGBot.Services.DeserializerJsonProp;
 
 namespace TLGBot.Services
 {
-    public static class GetWeatherInCity
+    public class GetWeatherInCity: IWeather
     {
-        public static int Temperature { get; set; }
-        public static int FeelsLikeTemperature { get; set; }
-        public static int MaxTemperature { get; set; }
-        public static int MinTemperature { get; set; }
-        public static string DescriptionWeather { get; set; }
-        public static string GroupDescriptionWeather { get; set; }
-        public static int AtmosphericPressure { get; set; }
-        public static int Humidity { get; set; }
-        public static int WindSpeed { get; set; }
-        public static string City { get; set; }
-        public static Root JsonWeatherObject { get; set; }
+        public int Temperature { get; set; }
+        public int FeelsLikeTemperature { get; set; }
+        public int MaxTemperature { get; set; }
+        public int MinTemperature { get; set; }
+        public string DescriptionWeather { get; set; }
+        public string GroupDescriptionWeather { get; set; }
+        public int AtmosphericPressure { get; set; }
+        public int Humidity { get; set; }
+        public int WindSpeed { get; set; }
+        public string City { get; set; }
+        public Root JsonWeatherObject { get; set; }
         public static int HttpCode { get; set; }
-        public static void GetWeather(string city)
+        public void GetWeather(string city)
         {
             try
             {
@@ -34,7 +35,6 @@ namespace TLGBot.Services
               {
                 using(StreamReader reader = new StreamReader(myWebResponse.GetResponseStream()))
                 {
-                    //HttpCode = ((HttpWebResponse)myWebResponse).StatusCode;
                     jsonValue = reader.ReadToEnd();
                     Root jsonWeatherObject = JsonConvert.DeserializeObject<Root>(jsonValue);
                     JsonWeatherObject = jsonWeatherObject;
@@ -54,7 +54,7 @@ namespace TLGBot.Services
             }
             
         }
-        private static void SetWeather()
+        private void SetWeather()
         {
             Temperature = (int)JsonWeatherObject.main.temp;
             FeelsLikeTemperature = (int)JsonWeatherObject.main.feels_like;
