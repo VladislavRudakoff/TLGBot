@@ -1,8 +1,11 @@
-[Сохраняю сюда полезные команды, чтобы не забыть]
+[Weather Telegram Bot]
 
-[var chat = new Chat() {Id = 981237981237}; - Написать в личку пользователю по Id]
+Данный бот создан в учебных целях. 
+Он позволяет выводить погоду в нужном городе, а также отвечает на парочку обыденных фраз. Чтобы получить список команд, нужно написать боту /help
 
-[Name should be with quotes " like "Users" - hack for PostgreSQL
-SqlMapperExtensions.TableNameMapper = (type) => $"\"{type.Name}s\"";]
+В данный момент ищу работу, не имею коммерческого опыта в разработке. Всегда открыт для конструктивной критики. 
 
-[If HTTP status code error 403 (403: Forbidden: bot was blocked by the user) - Remove a user from the DB]
+Автор: Рудаков Владислав
+Контакты: -Телефон +79910271995
+          -Telegram Reflected_Shadow
+          -Email vladislav.rudakoff@gmail.com
