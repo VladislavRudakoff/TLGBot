@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\MyApps\\TGBot\\TLGBot\\TLGBot.csproj": {}
+    "D:\\MyApps\\TLGBot\\TLGBot.csproj": {}
   },
   "projects": {
-    "D:\\MyApps\\TGBot\\TLGBot\\TLGBot.csproj": {
+    "D:\\MyApps\\TLGBot\\TLGBot.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MyApps\\TGBot\\TLGBot\\TLGBot.csproj",
+        "projectUniqueName": "D:\\MyApps\\TLGBot\\TLGBot.csproj",
         "projectName": "TLGBot",
-        "projectPath": "D:\\MyApps\\TGBot\\TLGBot\\TLGBot.csproj",
+        "projectPath": "D:\\MyApps\\TLGBot\\TLGBot.csproj",
         "packagesPath": "C:\\Users\\Владислав Рудаков\\.nuget\\packages\\",
-        "outputPath": "D:\\MyApps\\TGBot\\TLGBot\\obj\\",
+        "outputPath": "D:\\MyApps\\TLGBot\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Владислав Рудаков\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -38,6 +38,10 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "Microsoft.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[6.0.0-preview.7.21377.19, )"
+            },
             "System.Data.SQLite": {
               "target": "Package",
               "version": "[1.0.114.3, )"

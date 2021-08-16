@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using Newtonsoft.Json;
+using Newtonsoft.Json; //TODO: Попробовать System.Text.Json
 using TLGBot.Constants;
-using TLGBot.Interfaces;
 using static TLGBot.Services.DeserializerJsonProp;
 
 namespace TLGBot.Services
@@ -27,7 +26,9 @@ namespace TLGBot.Services
         {
             try
             {
-            string weatherUrl = Settings.WeatherUrl + city + Settings.WeatherApiKey + Settings.PropertiesRequest;
+            var config = new ConfigurationLoader();
+            config.Load();
+            string weatherUrl = config.GetProperty("Settings.WeatherUrl") + city + config.GetProperty("Settings.WeatherApiKey") + config.GetProperty("Settings.PropertiesRequest");
             HttpWebRequest myWebRequest = (HttpWebRequest)HttpWebRequest.Create(weatherUrl);
             myWebRequest.Method = "GET";
             string jsonValue = "";

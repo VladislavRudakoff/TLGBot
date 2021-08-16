@@ -1,6 +1,5 @@
 using System;
-using System.Data.SQLite;
-using TLGBot.Interfaces;
+using System.Data.SQLite; //TODO: Перекинуть на PostgreSQL
 
 namespace TLGBot.Services
 {
@@ -31,7 +30,7 @@ namespace TLGBot.Services
                 Console.WriteLine("Что-то случилось с БД, нужно проверить.");
             }
         }
-        //If HTTP status code error 403 (403: Forbidden: bot was blocked by the user) - Remove a user from the DB 
+        
         public void Delete(string chatId)
         { 
             using (sqliteDB = new SQLiteConnection("Data Source=DB.db;"))
